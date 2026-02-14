@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Para ti 💖</title>
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #ffe6f0;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #e60073;
+            font-size: 42px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        img {
+            max-width: 300px;
+            border-radius: 25px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+            margin: 15px;
+            animation: fadeIn 2s ease;
+        }
+
+        .grande {
+            max-width: 380px;
+        }
+
+        /* Amenaza centrada */
+        .amenaza-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .amenaza-img {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #ff4d88;
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            font-size: 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #noBtn {
+            background-color: #ff99bb;
+            position: absolute;
+        }
+
+        /* Corazones */
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            animation: float 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            to { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Confeti */
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            top: -10px;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 Música (NO autoplay, se activa con clic) -->
+    <audio id="musica" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="contenido">
+        <h1>¿Quieres ser mi San valentin? 💕</h1>
+        <img src="valentinaimagen.jpeg">
+
+        <div>
+            <button id="siBtn" onclick="reproducirMusica(); aceptar()">Sí 💘</button>
+            <button id="noBtn" onclick="reproducirMusica(); rechazar()">No 😔</button>
+        </div>
+    </div>
+
+    <script>
+        let escala = 1;
+        let contadorNo = 0;
+
+        const musica = document.getElementById("musica");
+
+        function reproducirMusica() {
+            if (musica.paused) {
+                musica.play();
+            }
+        }
+
+        function rechazar() {
+            contadorNo++;
+
+            // Crece el botón SÍ
+            escala += 0.25;
+            document.getElementById("siBtn").style.transform = `scale(${escala})`;
+
+            // Mover el botón NO
+            const noBtn = document.getElementById("noBtn");
+            noBtn.style.left = Math.random() * 70 + "%";
+            noBtn.style.top = Math.random() * 60 + "%";
+
+            if (contadorNo === 9) {
+                mostrarAmenaza();
+            }
+        }
+
+        function mostrarAmenaza() {
+            document.getElementById("contenido").innerHTML = `
+                <h1>Presiona SÍ o publico esta foto </h1>
+
+                <div class="amenaza-container">
+                    <img src="diquesi.jpeg" class="amenaza-img">
+                    <img src="diquesi2.jpeg" class="amenaza-img">
+                </div>
+
+                <button id="siBtn" onclick="reproducirMusica(); aceptar()" style="transform: scale(2.2)">
+                    SÍ 💘
+                </button>
+            `;
+        }
+
+        function aceptar() {
+            lanzarConfeti();
+            document.getElementById("contenido").innerHTML = `
+                <h1>Ya sabía que querías 💖</h1>
+                <img src="eso.jpeg" class="grande">
+            `;
+        }
+
+        // Corazones infinitos
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (20 + Math.random() * 20) + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }, 500);
+
+        // Confeti
+        function lanzarConfeti() {
+            for (let i = 0; i < 80; i++) {
+                const c = document.createElement("div");
+                c.className = "confetti";
+                c.style.left = Math.random() * 100 + "vw";
+                c.style.backgroundColor =
+                    ["#ff4d88", "#ffccdd", "#e60073", "#ffd1dc"][Math.floor(Math.random() * 4)];
+                c.style.animationDuration = (2 + Math.random() * 2) + "s";
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 4000);
+            }
+        }
+    </script>
+
+</body>
+</html>
